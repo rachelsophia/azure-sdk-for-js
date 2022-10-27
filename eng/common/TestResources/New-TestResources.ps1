@@ -99,6 +99,14 @@ param (
 
 . $PSScriptRoot/SubConfig-Helpers.ps1
 
+Write-Host "BBP DEBUG"
+Write-Host "id: $ProvisionerApplicationId"
+Write-Host "oid: $ProvisionerApplicationOid"
+Write-Host "sub: $SubscriptionId"
+Write-Host "BBP DEBUG"
+
+Set-PSDebug -Trace 1
+
 # By default stop for any error.
 if (!$PSBoundParameters.ContainsKey('ErrorAction')) {
     $ErrorActionPreference = 'Stop'
