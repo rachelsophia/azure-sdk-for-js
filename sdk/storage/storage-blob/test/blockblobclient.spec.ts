@@ -238,7 +238,7 @@ describe("BlockBlobClient", () => {
     assert.equal(gResp.accessTier, BlockBlobTier.Cool);
   });
 
-  it("getBlockList", async () => {
+  it.only("getBlockList", async () => {
     const body = "HelloWorld";
     await blockBlobClient.stageBlock(base64encode("1"), body, body.length);
     await blockBlobClient.stageBlock(base64encode("2"), body, body.length);

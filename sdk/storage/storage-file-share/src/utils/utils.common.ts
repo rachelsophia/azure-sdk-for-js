@@ -3,6 +3,15 @@
 
 import { AbortSignalLike } from "@azure/abort-controller";
 import { HttpHeaders, isNode, URLBuilder } from "@azure/core-http";
+import {
+  ListFilesAndDirectoriesSegmentResponse as ListFilesAndDirectoriesSegmentResponseInternal,
+  StringEncoded,
+} from "../generated/src/models";
+import {
+  DirectoryItem,
+  FileItem,
+  ListFilesAndDirectoriesSegmentResponse,
+} from "../generatedModels";
 import { HttpAuthorization } from "../models";
 import { HeaderConstants, PathStylePorts, URLConstants } from "./constants";
 
@@ -552,4 +561,45 @@ export function EscapePath(pathName: string): string {
     split[i] = encodeURIComponent(split[i]);
   }
   return split.join("/");
+}
+
+export function StringEncodedToString(name: StringEncoded): string {
+  if (name.encoded) {
+    return decodeURIComponent(name.content!);
+  } else {
+    return name.content!;
+  }
+}
+
+export function ConvertInternalResponseOfListFiles(
+  internalResponse: ListFilesAndDirectoriesSegmentResponseInternal
+): ListFilesAndDirectoriesSegmentResponse {
+  const wrappedResponse = {
+    ...internalResponse,
+    prefix: undefined,
+    segment: {
+      fileItems: internalResponse.segment.fileItems.map((fileItemInternal) => {
+        const fileItem: FileItem = {
+          ...fileItemInternal,
+          name: StringEncodedToString(fileItemInternal.name),
+        };
+        return fileItem;
+      }),
+      directoryItems: internalResponse.segment.directoryItems.map((directoryItemInternal) => {
+        const directoryItem: DirectoryItem = {
+          ...directoryItemInternal,
+          name: StringEncodedToString(directoryItemInternal.name),
+        };
+        return directoryItem;
+      }),
+    },
+  };
+
+  const listResponse: ListFilesAndDirectoriesSegmentResponse = wrappedResponse as any;
+
+  if (internalResponse.prefix) {
+    listResponse.prefix = StringEncodedToString(internalResponse.prefix);
+  }
+
+  return listResponse;
 }

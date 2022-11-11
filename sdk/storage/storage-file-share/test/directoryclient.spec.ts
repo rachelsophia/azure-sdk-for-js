@@ -397,6 +397,88 @@ describe("DirectoryClient", () => {
     }
   });
 
+  it.only("listFilesAndDirectories - with invalid char", async () => {
+    const subDirClients = [];
+    const subDirNames = [];
+
+    for (let i = 0; i < 3; i++) {
+      const subDirClient = dirClient.getDirectoryClient(recorder.getUniqueName(`dir\uFFFE${i}`));
+      await subDirClient.create();
+      subDirClients.push(subDirClient);
+      subDirNames.push(subDirClient.name);
+    }
+
+    const subFileClients = [];
+    const subFileNames = [];
+    for (let i = 0; i < 3; i++) {
+      const subFileClient = dirClient.getFileClient(recorder.getUniqueName(`file\uFFFE${i}`));
+      await subFileClient.create(1024);
+      subFileClients.push(subFileClient);
+      subFileNames.push(subFileClient.name);
+    }
+
+    const result = (
+      await dirClient
+        .listFilesAndDirectories({
+          prefix: "",
+          includeTimestamps: true,
+          includeEtag: true,
+          includeAttributes: true,
+          includePermissionKey: true,
+          includeExtendedInfo: true,
+        })
+        .byPage()
+        .next()
+    ).value;
+
+    assert.ok(result.serviceEndpoint.length > 0);
+    assert.ok(shareClient.url.indexOf(result.shareName));
+    assert.deepStrictEqual(result.continuationToken, "");
+    assert.deepStrictEqual(result.segment.directoryItems.length, subDirClients.length);
+    assert.deepStrictEqual(result.segment.fileItems.length, subFileClients.length);
+
+    const resultDirNames = [];
+    for (const entry of result.segment.directoryItems) {
+      resultDirNames.push(entry.name);
+      assert.ok(entry.fileId);
+      assert.ok(entry.attributes);
+      assert.ok(entry.permissionKey);
+      assert.ok(entry.properties.creationTime);
+      assert.ok(entry.properties.lastAccessTime);
+      assert.ok(entry.properties.changeTime);
+      assert.ok(entry.properties.lastModified);
+      assert.ok(entry.properties.etag);
+    }
+
+    for (const subDirName of subDirNames) {
+      assert.ok(resultDirNames.includes(subDirName));
+    }
+
+    const resultFileNames = [];
+    for (const entry of result.segment.fileItems) {
+      resultFileNames.push(entry.name);
+      assert.ok(entry.fileId);
+      assert.ok(entry.attributes);
+      assert.ok(entry.permissionKey);
+      assert.ok(entry.properties.creationTime);
+      assert.ok(entry.properties.lastAccessTime);
+      assert.ok(entry.properties.changeTime);
+      assert.ok(entry.properties.lastModified);
+      assert.ok(entry.properties.etag);
+    }
+
+    for (const subFileName of subFileNames) {
+      assert.ok(resultFileNames.includes(subFileName));
+    }
+
+    for (const subFile of subFileClients) {
+      await subFile.delete();
+    }
+    for (const subDir of subDirClients) {
+      await subDir.delete();
+    }
+  });
+
   it("listFilesAndDirectories under root directory", async () => {
     const subDirClients = [];
     const rootDirClient = shareClient.getDirectoryClient("");
