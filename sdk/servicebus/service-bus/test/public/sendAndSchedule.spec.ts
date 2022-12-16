@@ -22,6 +22,8 @@ import { ServiceBusSender } from "../../src";
 import { AbortController } from "@azure/abort-controller";
 import { StandardAbortMessage } from "@azure/core-amqp";
 
+import { getLogLevel, setLogLevel } from "@azure/logger";
+
 const noSessionTestClientType = getRandomTestClientTypeWithNoSessions();
 const withSessionTestClientType = getRandomTestClientTypeWithSessions();
 const anyRandomTestClientType = getRandomTestClientType();
@@ -33,11 +35,15 @@ describe("Sender Tests", () => {
   let serviceBusClient: ServiceBusClientForTests;
   let entityName: EntityName;
 
+  let oldLogLevel: any;
   before(() => {
+    oldLogLevel = getLogLevel();
+    setLogLevel("verbose");
     serviceBusClient = createServiceBusClientForTests();
   });
 
   after(() => {
+    setLogLevel(oldLogLevel);
     return serviceBusClient.test.after();
   });
 
