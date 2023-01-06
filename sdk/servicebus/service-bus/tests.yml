@@ -5,6 +5,8 @@ stages:
     parameters:
       PackageName: "@azure/service-bus"
       ServiceDirectory: servicebus
+      MatrixFilters:
+        - Pool=.*-ubuntu-.*
       TimeoutInMinutes: 90
       Clouds: 'Public'
       SupportedClouds: 'Public,UsGov,China'
