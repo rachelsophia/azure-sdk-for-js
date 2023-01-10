@@ -38,11 +38,13 @@ describe("Sender Tests", () => {
   let oldLogLevel: any;
   before(() => {
     oldLogLevel = getLogLevel();
+    console.log("### setting log level to verbose");
     setLogLevel("verbose");
     serviceBusClient = createServiceBusClientForTests();
   });
 
   after(() => {
+    console.log("### restoring the old log level");
     setLogLevel(oldLogLevel);
     return serviceBusClient.test.after();
   });

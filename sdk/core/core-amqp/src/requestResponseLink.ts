@@ -153,13 +153,13 @@ export class RequestResponseLink implements ReqResLink {
         }
         aborter.addEventListener("abort", onAbort);
       }
-
+      console.log("#### requestresponselink this.receiver.address", this.receiver.address);
       timer = setTimeout(() => {
         this._responsesMap.delete(request.message_id as string);
         if (aborter) {
           aborter.removeEventListener("abort", onAbort);
         }
-        const address = this.receiver?.address || "address";
+        const address = this.receiver.address || "address";
         const desc: string =
           `The request with message_id "${request.message_id}" to "${address}" ` +
           `endpoint timed out. Please try again later.`;
