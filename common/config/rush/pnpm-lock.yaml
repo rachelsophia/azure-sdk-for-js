@@ -3680,7 +3680,7 @@ packages:
     dependencies:
       semver: 7.3.8
       shelljs: 0.8.5
-      typescript: 5.0.0-dev.20230111
+      typescript: 5.0.0-dev.20230113
     dev: false
 
   /downlevel-dts/0.7.0:
@@ -8277,8 +8277,8 @@ packages:
     hasBin: true
     dev: false
 
-  /typescript/5.0.0-dev.20230111:
-    resolution: {integrity: sha512-bsALKGRiteaVcio2QQo/8MBxaHAEirJ3tQiYym29Uh6/z/fi4LlBawrvnyGKI4WqI2Q+lchIgr2p2jKeF846bg==}
+  /typescript/5.0.0-dev.20230113:
+    resolution: {integrity: sha512-C8A/oe/tShuoeJTLhzznzTJyowVu17XwbjMsLSSRZnkHo6QHQdxW1xVtoS92lMzU/8bzpr1uqH3K/6hoXPb6+w==}
     engines: {node: '>=4.2.0'}
     hasBin: true
     dev: false
@@ -15029,7 +15029,7 @@ packages:
     dev: false
 
   file:projects/communication-identity.tgz:
-    resolution: {integrity: sha512-Ql6y+rpT2v6a0lAKv+YiWuhym6q/1X7+9EfWhphDIclrzyOMzgQt6GPCZdZ7YmCBhlYyeIiin26mHDVB6PLlHA==, tarball: file:projects/communication-identity.tgz}
+    resolution: {integrity: sha512-snOM35uvtaeBFnHRlPvxIWQUB62hddyL23LHFrVuZ3ucXlNZovEheSwepUbMjj6z5UXpamvSpaOXMfsebn9XpA==, tarball: file:projects/communication-identity.tgz}
     name: '@rush-temp/communication-identity'
     version: 0.0.0
     dependencies:
@@ -15062,7 +15062,10 @@ packages:
       mocha-testdata: 1.2.0
       nyc: 15.1.0
       prettier: 2.8.2
+      process: 0.11.10
       rimraf: 3.0.2
+      rollup: 2.79.1
+      rollup-plugin-shim: 1.0.0
       sinon: 9.2.4
       tslib: 2.4.1
       typescript: 4.8.4
@@ -16129,7 +16132,7 @@ packages:
     dev: false
 
   file:projects/digital-twins-core.tgz:
-    resolution: {integrity: sha512-Kx88rkD/kud2yFLn3hEDNVPiEmu/C3WEPClkK1Hr/RXWU32WOYlMJdE6SNt4EA4i8VgzwWFRHXxo6UMRdTjUrA==, tarball: file:projects/digital-twins-core.tgz}
+    resolution: {integrity: sha512-zpmdHAAYYxRxrTiSoRX+PAHpl6CVW7fgY2nbRTlj7GgQEtlDFlm7JrQ+0ASkEK2gPYHhT5YxoVof7MgLt9I8HA==, tarball: file:projects/digital-twins-core.tgz}
     name: '@rush-temp/digital-twins-core'
     version: 0.0.0
     dependencies:
@@ -16173,7 +16176,6 @@ packages:
     transitivePeerDependencies:
       - bufferutil
       - debug
-      - encoding
       - supports-color
       - utf-8-validate
     dev: false
